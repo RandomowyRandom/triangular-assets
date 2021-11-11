@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.InputSystem;
 
-namespace TriangularAssets.Input
+namespace TriangularAssets
 {
     public static class InputHandler
     {

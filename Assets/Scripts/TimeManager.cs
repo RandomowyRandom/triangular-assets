@@ -1,6 +1,6 @@
 using System;
 
-namespace TriangularAssets.TimeManagement
+namespace TriangularAssets
 {
     public class Timer
     {

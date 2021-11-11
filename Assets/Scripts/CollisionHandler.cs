@@ -1,8 +1,7 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.Events;
 
-namespace TriangularAssets.CollisionHandling
+namespace TriangularAssets
 {
     public class CollisionHandler : MonoBehaviour
     {
