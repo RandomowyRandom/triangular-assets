@@ -20,9 +20,14 @@ namespace TriangularAssets
             
             var sum = Vector2.zero;
             vectors.ForEach(v => sum += v);
-        
             var average = sum / vectors.Count;
-
+            
+            var magnitudeSum = 0f;
+            vectors.ForEach(v => magnitudeSum += v.magnitude);
+            var averageMagnitude = magnitudeSum / vectors.Count;
+            
+            average = average.normalized * averageMagnitude;
+            
             return average;
         }
     }

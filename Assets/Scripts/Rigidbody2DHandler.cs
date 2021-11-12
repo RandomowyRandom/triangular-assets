@@ -4,7 +4,7 @@ using UnityEngine;
 namespace TriangularAssets
 {
     [RequireComponent(typeof(Rigidbody2D))]
-    public class Rigidbody2DAddon : MonoBehaviour
+    public class Rigidbody2DHandler : MonoBehaviour
     {
         //TODO: still wip, needs a lot of polish and testing
         
@@ -14,8 +14,8 @@ namespace TriangularAssets
         
         private List<FixedForce> _forces = new List<FixedForce>();
 
-        private Vector2 _targetVelocity;
-        public Vector2 TargetVelocity => _targetVelocity;
+        private Vector2 _velocity;
+        public Vector2 Velocity => _velocity;
         
         private Vector2 _staticVelocity = Vector2.zero;
         public Vector2 StaticVelocity
@@ -26,8 +26,8 @@ namespace TriangularAssets
 
         private void FixedUpdate()
         {
-            _targetVelocity = GetTargetVelocity();
-            _rigidbody2D.velocity = _targetVelocity + _staticVelocity;
+            _velocity = GetTargetVelocity();
+            _rigidbody2D.velocity = _velocity + _staticVelocity;
             HandleTimeLeft();
         }
 
@@ -37,6 +37,12 @@ namespace TriangularAssets
             _rigidbody2D = GetComponent<Rigidbody2D>();
         }
         
+        /// <summary>
+        /// Adds a force to the rigidbody
+        /// </summary>
+        /// <param name="force">
+        /// Force to add
+        /// </param>
         public void AddForce(FixedForce force)
         {
             _forces.Add(force);
@@ -50,10 +56,8 @@ namespace TriangularAssets
             var vectorList = new List<Vector2>();
             foreach (var fixedForce in _forces)
             {
-                var value = fixedForce.Force * (_addForceCurve.Evaluate(Mathf.Lerp(0, fixedForce.Duration, fixedForce.TimeLeft)));
-
-                Debug.Log(_addForceCurve.Evaluate(Mathf.Lerp(0, fixedForce.Duration, fixedForce.TimeLeft)));
-
+                var value = fixedForce.Force * _addForceCurve.Evaluate(Mathf.Lerp(0, fixedForce.Duration, fixedForce.TimeLeft));
+                
                 vectorList.Add(value);
             }
 
@@ -84,8 +88,10 @@ namespace TriangularAssets
         
         public float TimeLeft { get; set; }
 
-        public FixedForce(Vector2 force, float duration)
+        public FixedForce(Vector2 force)
         {
+            var duration = force.magnitude * 0.01f;
+            
             Force = force;
             Duration = duration;
             TimeLeft = duration;
